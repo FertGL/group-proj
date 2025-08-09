@@ -4,10 +4,25 @@ package ru.gl.security.dto;
 public class AuthRequest {
     private String username;
     private String password;
+    private String role;
+
+    public AuthRequest(String username, String password, String role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     public AuthRequest(String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public AuthRequest() {

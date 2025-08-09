@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.gl.security.dto.AuthRequest;
 import ru.gl.security.dto.AuthResponse;
 import ru.gl.security.dto.RefreshRequest;
-import ru.gl.security.entity.User;
 import ru.gl.security.security.JwtUtils;
 import ru.gl.security.service.UserService;
 
@@ -37,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-        userService.createUser(request.getUsername(), request.getPassword(), "ROLE_USER");
+        userService.createUser(request.getUsername(), request.getPassword(), request.getRole());
         return ResponseEntity.ok("User registered");
     }
 
@@ -47,7 +46,6 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
 
-        // Получаем UserDetails вместо вашего User
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
         String accessToken = jwtUtils.generateAccessToken(userDetails);
