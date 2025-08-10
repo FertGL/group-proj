@@ -19,10 +19,7 @@ public class UserService implements UserDetailsService {
     private PasswordEncoder passwordEncoder;
 
     public User createUser(String username, String password, String role) {
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
-        user.setRole(role);
+        User user = new User(username,passwordEncoder.encode(password),role);
         return userRepository.save(user);
     }
 
@@ -32,7 +29,8 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return org.springframework.security.core.userdetails.User.builder()
+        return org.springframework.security.core.userdetails.User
+                .builder()
                 .username(user.getUsername())
                 .password(user.getPassword())
                 .roles(user.getRole().replace("ROLE_", ""))
